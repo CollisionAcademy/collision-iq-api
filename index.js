@@ -1,20 +1,20 @@
 const express = require('express');
 const cors = require('cors');
-const { Configuration, OpenAIApi } = require('openai');
+const openai = require('openai');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const configuration = new Configuration({
+const configuration = new openai.Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
-const openai = new OpenAIApi(configuration);
+const openaiClient = new openai.OpenAIApi(configuration);
 
 app.post('/chat', async (req, res) => {
   try {
     const { messages } = req.body;
-    const completion = await openai.createChatCompletion({
+    const completion = await openaiClient.createChatCompletion({
       model: 'gpt-4',
       messages,
     });
@@ -27,4 +27,4 @@ app.post('/chat', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
